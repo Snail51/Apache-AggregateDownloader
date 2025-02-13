@@ -4,7 +4,7 @@
 	error_reporting(E_ALL);
 	
 	//remove downloads older than 1 hour
-	$command = "find /mnt/hdd/web/aggrDownload/tmp_download -type f -mmin +60 -delete";
+	$command = "find /mnt/hdd/web/control/aggrDownload/tmp_download -type f -mmin +60 -delete";
 	exec($command);
 	
     //check if the 'dir' parameter is set
