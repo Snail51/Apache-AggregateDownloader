@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+    <head>
+        <link rel="stylesheet" href="/assets/css/site.css">
+    
+        <meta charset='utf-8'>
+        <title>About</title>
+        <link rel="icon" href="/assets/image/internal/snailien_logo.jpg" type="jpg">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    </head>
+    <body>
+        <script src="/assets/partials/modifyFooter/modifyFooter.js" defer></script>
+        
+        <hr>
+
+        <h1 style="color: whitesmoke;" id="index_header">INDEX HEADER</h1>
+
+        <hr>
+
+        <pre id="submessage" style="color: whitesmoke; background-color: rgb(67, 72, 91); border: 4px solid black; padding: 1%;">
+It may take a few minutes for us to prepare your ZIP file based on how large it is. 
+Please be patient and <b>do not close this page</b>.
+        </pre>
+
+        <script>
+            async function download()
+            {
+                var query = new URLSearchParams(window.location.search);
+                var arg = query.get('dir');
+                arg = arg.substring(0, arg.length-1)
+                var title = arg.split("/");
+                title = title[title.length-2];
+                document.getElementById("index_header").innerHTML = "Preparing your Download of <b style='color:cyan;'>" + arg + "</b>...";
+
+                // Make a request to the php handler, starting the process of creating the archive
+                var response = await fetch("/control/aggrDownload/aggregateDownload.php?dir=" + arg)
+                var result = await response.text();
+                var targetURL = "/control/aggrDownload/tmp_download/" + result;
+
+                // Poll the target every 5000ms until the file is ready
+                var fileExists = false;
+                while (!fileExists)
+                {
+                    var check = await fetch(targetURL, {method: 'HEAD'});
+                    fileExists = check.ok;
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+                }
+
+                // Update page contents and start the download
+                document.getElementById("index_header").innerHTML = "Your Download of <b style='color:cyan;'>" + arg + "</b> has begun.";
+                document.getElementById("submessage").innerHTML = "Your browser is now downloading the file.\nYou may now close this page if desired.\nThank you for your patience.";
+
+                window.location.href = targetURL;
+            }
+
+            download();
+        </script>
+    </body>
+</html>
