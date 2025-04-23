@@ -39,6 +39,8 @@
     $metadata = str_replace("{{archiveURL}}", "null", $metadata);
 	echo $metadata;
 
+    echo("\n<link rel='stylesheet' href='/assets/css/site.css'>\n");
+
 	# === End <head> ===
 	echo("\n</head>\n");
 
