@@ -31,6 +31,12 @@
 	$metadata = str_replace("{{siteURL}}", $_SERVER["SERVER_NAME"], $metadata);
 	$metadata = str_replace("{{tags}}", "index, autoindex, directory, directory listing, files, view, browse", $metadata);
 	$metadata = str_replace("{{icon}}", "/assets/image/internal/snailien_logo.jpg", $metadata);
+    $metadata = str_replace("{{revisedTime}}", date("Y-m-d H:i:s", filemtime($_SERVER["SCRIPT_FILENAME"])), $metadata);
+    $metadata = str_replace("{{supportsMobile}}", "True", $metadata);
+    $metadata = str_replace("{{timeNow}}", date("Y-m-d H:i:s"), $metadata);
+    $metadata = str_replace("{{contentType}}", "Directory Index", $metadata);
+    $metadata = str_replace("{{archiveTitle}}", "null", $metadata);
+    $metadata = str_replace("{{archiveURL}}", "null", $metadata);
 	echo $metadata;
 
 	# === End <head> ===
